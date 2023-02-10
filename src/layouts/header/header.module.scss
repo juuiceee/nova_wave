@@ -1,0 +1,53 @@
+@import "../../content/css/colors.scss";
+
+.headerMain {
+    position: sticky;
+    height: 40px;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    z-index: 100;
+    background: var(--main-color);
+    background: linear-gradient(0deg, var(--main-color) 0%, var(--second-coor) 100%);
+    -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.5) inset;
+    -moz-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.5) inset;
+    box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.5) inset;
+
+    .headerContent{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: auto;
+        justify-content: space-between;
+
+        .headerLeft{
+            order: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100px;
+
+            img{
+                cursor: pointer;
+            }
+        }
+
+        .headerRight{
+            order: 2;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+
+            .profile{
+                border-radius: 100%;
+                border: 1px solid orange;
+
+                &:hover{
+                    cursor: pointer;
+                    opacity: 0.9;
+                }
+            }
+        }
+    }
+}
