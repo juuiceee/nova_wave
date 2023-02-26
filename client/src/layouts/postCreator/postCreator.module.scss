@@ -1,0 +1,64 @@
+@import "../../content/css/colors.scss";
+
+.content{
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    margin: 0 auto;
+    padding: 10px;
+
+    .editor{
+        order: 0;
+        flex: 1;
+
+        .title{
+            resize: none;
+            font-size: 24px;
+            font-weight: bold;
+            padding-bottom: 40px;
+        }
+        
+        .text{
+            resize: none;
+            font-size: 16px;
+            padding-bottom: 60px;
+        }
+
+        .uploadImage{
+            div{
+                width: 100%;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+        }
+
+        .imageInput{
+            background-color: rgba(1, 249, 253, 0.137);
+            height: 70px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+
+            &:hover{
+                cursor: pointer;
+                background-color: rgba(1, 249, 253, 0.288);
+            }
+        }
+    }
+
+    .footer{
+        order: 1;
+        top: auto;
+        bottom: 0;
+        position: sticky;
+        z-index: 10;
+        display: flex;
+        height: 50px;
+        padding: 5px;
+        background: #fffef4;
+    }
+
+    textarea::-webkit-scrollbar{
+        width: 0px;
+    }
+}

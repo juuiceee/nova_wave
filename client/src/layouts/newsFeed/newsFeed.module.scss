@@ -1,0 +1,13 @@
+.feed{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 20px;
+
+    .post{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        min-width: 550px;
+    }
+}

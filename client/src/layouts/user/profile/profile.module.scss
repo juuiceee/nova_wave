@@ -1,0 +1,21 @@
+@import "../../../content/css/colors.scss";
+
+.modalButton{
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.profileContent{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    width: 700px;
+    margin: 10px auto;
+    gap: 20px;
+
+    .buttons{
+        display: flex;
+        justify-content: space-between;
+    }
+}

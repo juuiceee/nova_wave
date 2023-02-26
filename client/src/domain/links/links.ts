@@ -1,0 +1,6 @@
+export const TrendsLink = '/trends'
+export const NewPostLink = '/createPost'
+export const NewLink = '/new'
+export const FavouritesLink = '/favourites'
+export const SubscriptionsLink = '/subscriptions'
+export const ProfileLink = '/profile'

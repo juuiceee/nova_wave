@@ -1,3 +1,5 @@
+@import "../../../content/css/colors.scss";
+
 .authContent{
     display: flex;
     flex-direction: column;
@@ -10,9 +12,27 @@
         flex-direction: column;
     }
 
-    .buttonRow{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+}
+.buttonRow{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .logButton{
+        background-color: var(--second-color);
+
+        &:hover{
+            background-color: var(--second-color);
+            opacity: 0.9;
+        }
+    }
+
+    .regButton{
+        color: var(--main-color);
+
+        &:hover{
+            color: var(--main-color);
+            opacity: 0.9;
+        }
     }
 }
