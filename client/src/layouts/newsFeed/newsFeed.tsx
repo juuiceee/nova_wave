@@ -1,4 +1,4 @@
-import { Card } from "antd"
+import { Card, Image } from "antd"
 import { useEffect, useRef, useState } from "react"
 import { IPost } from "../../domain/post/post"
 import PostProvider from "../../domain/post/postProvider"
@@ -49,8 +49,16 @@ export function NewsFeed() {
             <div className={styles.feed}>
                 {
                     posts.map((p, index) => (
-                        <Card className={styles.post} key={index}>
-                            <h3>{p.title}</h3>
+                        <Card bodyStyle={{ padding: 18 }} className={styles.post} key={index}>
+                            <div className={styles.headerContainer}>
+                                <p>{p.title}</p>
+                            </div>
+                            {
+                                p.image != null &&
+                                <div className={styles.imageContainer}>
+                                    <Image preview={false} width={250} height={250} src={process.env.REACT_APP_API_URL + p.image} />
+                                </div>
+                            }
                             <p>{p.content}</p>
                         </Card>
                     ))

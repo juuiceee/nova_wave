@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
+import { PostsModule } from './posts/posts.module';
+import { RolesModule } from './roles/roles.module';
 import { User } from './users/users.model';
 import { UsersModule } from './users/users.module';
-import { RolesModule } from './roles/roles.module';
-import { AuthModule } from './auth/auth.module';
-import { PostsModule } from './posts/posts.module';
-import { FilesModule } from './files/files.module';
 
 @Module({
   controllers: [],
@@ -24,6 +26,9 @@ import { FilesModule } from './files/files.module';
       database: process.env.POSTGRES_DB,
       models: [User],
       autoLoadModels: true
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'localstorage')
     }),
     UsersModule,
     RolesModule,
