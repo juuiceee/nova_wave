@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { RolesService } from 'src/roles/roles.service';
+import { Op } from 'sequelize';
 import * as uuid from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.model';
@@ -8,7 +8,7 @@ import { User } from './users.model';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User) private userRepository: typeof User, private roleService: RolesService) { }
+    constructor(@InjectModel(User) private userRepository: typeof User) { }
 
     async getAllUsers() {
         const users = await this.userRepository.findAll({ include: { all: true } });
@@ -30,6 +30,11 @@ export class UsersService {
         return user
     }
 
+    async getUsersByIds(ids: uuid[]) {
+        const users = await this.userRepository.findAll({ where: { id: { [Op.in]: ids } } })
+        return users
+    }
+
     async createUser(dto: CreateUserDto) {
         if (dto.name.length < 4 || dto.name.length > 16)
             throw new HttpException('Некорректное имя', HttpStatus.BAD_REQUEST)
@@ -40,8 +45,7 @@ export class UsersService {
         if (dto.password.length < 4 || dto.password.length > 16)
             throw new HttpException('Некорректный пароль', HttpStatus.BAD_REQUEST)
 
-        const role = await this.roleService.getRoleByValue('USER')
-        const user = await this.userRepository.create({ ...dto, id: uuid.v4(), roleId: role.id })
+        const user = await this.userRepository.create({ ...dto, id: uuid.v4() })
         return user;
     }
 

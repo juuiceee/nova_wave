@@ -1,0 +1,52 @@
+.postPage{
+    display: flex;
+    margin: 0 auto;
+    padding: 10px 0;
+
+    .postContainer{
+        display: flex;
+        flex-direction: column;
+
+        .post{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            max-width: 500px;
+            min-width: 500px;
+
+            .headerContainer{
+                p{
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+            }
+
+            .imageContainer{
+            display: flex;
+            justify-content: center;
+            margin: 10px -19px;
+            padding: 5px 0;
+            background-color: rgba(223, 222, 222, 0.5);
+
+            img{
+                max-width: 500px;
+                max-height: 260px;
+            }
+        }
+        }
+    }
+}
+
+
+.nonePost{
+    margin: 0 auto;
+    align-items: center;
+    display: flex;
+    font-size: 26px;
+
+    p{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+}

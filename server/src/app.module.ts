@@ -2,11 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { resolve } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
-import { RolesModule } from './roles/roles.module';
 import { User } from './users/users.model';
 import { UsersModule } from './users/users.module';
 
@@ -28,10 +27,9 @@ import { UsersModule } from './users/users.module';
       autoLoadModels: true
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'localstorage')
+      rootPath: resolve('./localstorage')
     }),
     UsersModule,
-    RolesModule,
     AuthModule,
     PostsModule,
     FilesModule,

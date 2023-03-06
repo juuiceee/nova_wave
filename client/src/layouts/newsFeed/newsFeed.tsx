@@ -1,20 +1,22 @@
-import { Card, Image } from "antd"
+import { Card, Image, Typography } from "antd"
 import { useEffect, useRef, useState } from "react"
+import { Link } from "react-router-dom"
 import { IPost } from "../../domain/post/post"
 import PostProvider from "../../domain/post/postProvider"
 import styles from './newsFeed.module.scss'
 
 export function NewsFeed() {
 
+    const limit = 10;
     const [posts, setPosts] = useState<IPost[]>([])
     const currentPage = useRef(1)
     const totalCount = useRef(0)
 
     useEffect(() => {
         (async () => {
-            const p = await PostProvider.getLimitPosts(10, currentPage.current - 1)
-            setPosts(p.data.rows)
-            totalCount.current = p.data.count
+            const postPaged = await PostProvider.getLimitPosts(limit, currentPage.current - 1)
+            setPosts(postPaged.data.rows)
+            totalCount.current = postPaged.data.count
         })()
     }, [])
 
@@ -28,7 +30,7 @@ export function NewsFeed() {
     }, [])
 
     async function scrollHandler() {
-        if (currentPage.current * 10 >= totalCount.current) {
+        if (currentPage.current * limit >= totalCount.current) {
             document.removeEventListener('scroll', scrollHandler)
             return
         }
@@ -38,7 +40,7 @@ export function NewsFeed() {
         const innerHeight = window.innerHeight
 
         if (scrollHeight - (scrollTop + innerHeight) < 100) {
-            const response = await PostProvider.getLimitPosts(10, currentPage.current)
+            const response = await PostProvider.getLimitPosts(limit, currentPage.current)
             setPosts(prevState => [...prevState, ...response.data.rows])
             currentPage.current++
         }
@@ -49,18 +51,22 @@ export function NewsFeed() {
             <div className={styles.feed}>
                 {
                     posts.map((p, index) => (
-                        <Card bodyStyle={{ padding: 18 }} className={styles.post} key={index}>
-                            <div className={styles.headerContainer}>
-                                <p>{p.title}</p>
-                            </div>
-                            {
-                                p.image != null &&
-                                <div className={styles.imageContainer}>
-                                    <Image preview={false} width={250} height={250} src={process.env.REACT_APP_API_URL + p.image} />
+                        <Link key={p.id} to={`/post/${p.id}`}>
+                            <Card bodyStyle={{ padding: 18 }} className={styles.post} key={index}>
+                                <div className={styles.headerContainer}>
+                                    <p>{p.title}</p>
                                 </div>
-                            }
-                            <p>{p.content}</p>
-                        </Card>
+                                {
+                                    p.image != null &&
+                                    <div className={styles.imageContainer}>
+                                        <Image preview={false} src={process.env.REACT_APP_API_URL + p.image} />
+                                    </div>
+                                }
+                                <Typography.Paragraph ellipsis={{ rows: 5 }}>
+                                    {p.content}
+                                </Typography.Paragraph>
+                            </Card>
+                        </Link>
                     ))
                 }
             </div>

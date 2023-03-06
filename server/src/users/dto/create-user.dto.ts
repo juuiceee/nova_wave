@@ -6,6 +6,5 @@ export class CreateUserDto {
     readonly description: string;
     readonly email: string;
     readonly password: string;
-    readonly roleId: uuid;
     readonly isRemoved: boolean;
 }

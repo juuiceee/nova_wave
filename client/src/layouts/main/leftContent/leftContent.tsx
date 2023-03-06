@@ -23,26 +23,26 @@ export function LeftContent() {
                 </div>
             </Link>
 
-            <Link to={NewLink}>
-                <div className={isActive(NewLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                    <TbLeaf size={17} />
-                    <p>Свежее</p>
-                </div>
-            </Link>
+            {/* <Link to={NewLink}> */}
+            <div className={isActive(NewLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
+                <TbLeaf size={17} />
+                <p>Свежее</p>
+            </div>
+            {/* </Link> */}
 
-            <Link to={FavouritesLink}>
-                <div className={isActive(FavouritesLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                    <FiStar size={17} />
-                    <p>Избранное</p>
-                </div>
-            </Link>
+            {/* <Link to={FavouritesLink}> */}
+            <div className={isActive(FavouritesLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
+                <FiStar size={17} />
+                <p>Избранное</p>
+            </div>
+            {/* </Link> */}
 
-            <Link to={SubscriptionsLink}>
-                <div className={isActive(SubscriptionsLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                    <IoCheckmark size={17} />
-                    <p>Подписки</p>
-                </div>
-            </Link>
+            {/* <Link to={SubscriptionsLink}> */}
+            <div className={isActive(SubscriptionsLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
+                <IoCheckmark size={17} />
+                <p>Подписки</p>
+            </div>
+            {/* </Link> */}
         </div >
     )
 }

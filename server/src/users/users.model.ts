@@ -7,7 +7,6 @@ interface UserCreationAtribute {
     description: string;
     password: string;
     email: string;
-    roleId: string;
     isRemoved: boolean;
 }
 
@@ -30,7 +29,4 @@ export class User extends Model<User, UserCreationAtribute>{
 
     @Column({ type: DataType.BOOLEAN, defaultValue: false })
     isRemoved: boolean;
-
-    @Column({ type: DataType.UUID })
-    roleId: uuid;
 }
