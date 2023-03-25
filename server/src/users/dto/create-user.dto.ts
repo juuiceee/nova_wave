@@ -5,6 +5,7 @@ export class CreateUserDto {
     readonly name: string;
     readonly description: string;
     readonly email: string;
+    readonly avatarSrc: string;
     readonly password: string;
-    readonly isRemoved: boolean;
+    readonly createdDateTime: Date;
 }

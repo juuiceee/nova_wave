@@ -7,11 +7,16 @@ interface UserCreationAtribute {
     description: string;
     password: string;
     email: string;
+    avatar: string;
+    favouritePosts: uuid[];
     isRemoved: boolean;
+    createdDateTime: Date;
+    updatedDateTime: Date;
 }
 
-@Table({ tableName: 'users' })
+@Table({ tableName: 'users', createdAt: false, updatedAt: false })
 export class User extends Model<User, UserCreationAtribute>{
+
     @Column({ type: DataType.UUID, unique: true, primaryKey: true })
     id: uuid;
 
@@ -27,6 +32,18 @@ export class User extends Model<User, UserCreationAtribute>{
     @Column({ type: DataType.STRING, unique: true, allowNull: false })
     email: string;
 
-    @Column({ type: DataType.BOOLEAN, defaultValue: false })
+    @Column({ type: DataType.STRING })
+    avatar: string;
+
+    @Column({ type: DataType.ARRAY(DataType.UUID), defaultValue: [], allowNull: false })
+    favouritePosts: uuid[];
+
+    @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
     isRemoved: boolean;
+
+    @Column({ type: DataType.DATE, allowNull: false })
+    createdDateTime: Date;
+
+    @Column({ type: DataType.DATE })
+    updatedDateTime: Date;
 }

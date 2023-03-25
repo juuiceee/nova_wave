@@ -4,4 +4,6 @@ export interface IUser {
     description: string;
     password: string;
     email: string;
+    avatar: string | null;
+    favouritePosts: string[];
 }

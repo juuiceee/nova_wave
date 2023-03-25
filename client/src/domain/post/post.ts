@@ -3,5 +3,9 @@ export interface IPost {
     title: string;
     content: string;
     image: string | null;
+    usersLiked: string[];
+    authorName: string;
+    authorAvatar: string;
     userId: string;
+    createdDateTime: Date
 }

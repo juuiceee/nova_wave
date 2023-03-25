@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as uuid from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
@@ -11,13 +13,14 @@ export class UsersController {
         return this.userService.getAllUsers()
     }
 
-    @Post('/create')
-    create(@Body() userDto: CreateUserDto) {
-        return this.userService.createUser(userDto)
+    @Post('/save')
+    @UseInterceptors(FileInterceptor('avatar'))
+    save(@Body() dto: CreateUserDto, @UploadedFile() image) {
+        return this.userService.saveUser(dto, image)
     }
 
-    @Post('/save')
-    save(@Body() userDto: CreateUserDto) {
-        return this.userService.saveUser(userDto)
+    @Put('/setFavouritePost/:postId/:userId')
+    like(@Param('postId') postId: uuid, @Param('userId') userId: uuid) {
+        return this.userService.setFavouritePost(postId, userId)
     }
 }

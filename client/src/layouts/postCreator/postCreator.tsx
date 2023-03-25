@@ -1,9 +1,9 @@
 import { PictureOutlined } from '@ant-design/icons';
 import { Button, Image, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { BsFillTrashFill } from 'react-icons/bs';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TrendsLink } from "../../domain/links/links";
 import PostProvider from "../../domain/post/postProvider";
 import { IUser } from "../../domain/user/user";
@@ -14,6 +14,8 @@ interface IProps {
 }
 
 export function PostCreator(props: IProps) {
+    const { id } = useParams<string>();
+
     const ref = useRef<HTMLInputElement>(null);
 
     const textAreaTitle = useRef<any>(null)
@@ -26,6 +28,19 @@ export function PostCreator(props: IProps) {
 
     const [messageApi, contextHolder] = message.useMessage();
     const navigateTo = useNavigate()
+
+    useEffect(() => {
+        if (id != '0' && id != null) {
+            (async () => {
+                const response = await PostProvider.getPostById(id)
+                setTitle(response.data.title)
+                setContent(response.data.content)
+
+                if (response.data.image != null)
+                    setImageSrc(response.data.image)
+            })()
+        }
+    }, [])
 
     function keyUpTitle(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         textAreaTitle.current!.resizableTextArea.textArea.style.height = `auto`
@@ -73,14 +88,22 @@ export function PostCreator(props: IProps) {
                 duration: 3
             })
 
-        if (props.user)
+        if (props.user != null)
             try {
                 const formData = new FormData()
                 formData.append('title', title)
                 formData.append('content', content)
                 formData.append('userId', props.user.id)
+
                 if (image)
                     formData.append('image', image)
+
+                if (id != '0' && id != null) {
+                    formData.append('id', id)
+                    formData.append('imageSrc', imageSrc)
+                    await PostProvider.edit(formData)
+                    return navigateTo(TrendsLink)
+                }
 
                 await PostProvider.create(formData);
                 navigateTo(TrendsLink)
@@ -124,7 +147,7 @@ export function PostCreator(props: IProps) {
                     imageSrc &&
                     <div className={styles.imageContainer}>
                         <div className={styles.picture}>
-                            <Image src={imageSrc} />
+                            <Image src={image != null ? imageSrc : process.env.REACT_APP_API_URL + imageSrc} />
                         </div>
                         <Button className={styles.deleteButton} icon={<BsFillTrashFill />} danger type='default' onClick={deleteImage}>Удалить</Button>
                     </div>
@@ -144,7 +167,7 @@ export function PostCreator(props: IProps) {
 
             <div className={styles.footer}>
                 <Button type="primary" onClick={createPost}>
-                    Опубликовать
+                    {id != '0' ? "Сохранить" : "Опубликовать"}
                 </Button>
             </div>
         </div>

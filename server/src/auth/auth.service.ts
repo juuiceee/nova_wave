@@ -31,7 +31,7 @@ export class AuthService {
             throw new HttpException('Пользователь с таким именем уже существует', HttpStatus.BAD_REQUEST)
 
         const hashPassword = await bcrypt.hash(userDto.password, 5);
-        const user = await this.userService.createUser({ ...userDto, password: hashPassword })
+        const user = await this.userService.createUser({ ...userDto }, hashPassword)
         const tokens = await this.generateTokens(user)
         await this.saveToken(user.id, tokens.refreshToken)
 
@@ -94,10 +94,11 @@ export class AuthService {
 
         if (tokenData) {
             tokenData.refreshToken = refreshToken
+            tokenData.updatedDateTime = new Date()
             return tokenData.save();
         }
 
-        const token = await this.tokenRepository.create({ userId, refreshToken })
+        const token = await this.tokenRepository.create({ userId, refreshToken, createdDateTime: new Date() })
         return token
     }
 

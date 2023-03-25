@@ -1,0 +1,167 @@
+.popover{
+    width: 50px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.popoverContent{
+    display: flex;
+    flex-direction: column;
+
+    .button{
+       display: flex;
+        justify-content: start;
+        align-items: center;
+        font-size: 12px;
+         }
+}
+
+.postWithoutShadow{
+    box-shadow: none !important;
+}
+
+.post, .postWithoutShadow{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        max-width: 500px;
+        min-width: 500px;
+
+        .link{
+            .meta{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+
+                .author{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 10px;
+
+                    .authorName{
+                        font-weight: 600;
+                    }
+
+                    .date{
+                        margin-left: 20px;
+                        color: rgb(175, 175, 175);
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .imageContainer{
+                display: flex;
+                justify-content: center;
+                margin: 10px -19px;
+                padding: 5px 0;
+                background-color: rgba(223, 222, 222, 0.5);
+
+                img{
+                    max-width: 500px;
+                    max-height: 260px;
+                }
+            }
+
+            p{
+                word-break: break-word;
+            }
+        }
+
+        .bottomContainer{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            border-radius: 0 0 8px 8px;
+            width: 30%;
+            gap: 50px;
+            align-items: center;
+
+            .likeContainer{
+                display: flex;
+                gap: 5px;
+                align-items: center;
+                width: 50%;
+                user-select: none;
+
+                .likeIcon{
+                    color: gray;
+                    padding: 3px;
+                }
+
+                .activeLikeIcon{
+                    color: rgb(250, 70, 70);
+                    padding: 3px;
+                }
+
+                .likeCount{
+                    margin-bottom: 1px;
+                    color: gray;
+                }
+
+                &:hover{
+                    cursor: pointer;
+                    .likeIcon{
+                        color: rgb(250, 70, 70);
+                        background-color: rgba(199, 199, 199, 0.288);
+                        border-radius: 50px;
+                        transition: 0.3s;
+                    }
+                    .activeLikeIcon{
+                        background-color: rgba(199, 199, 199, 0.288);
+                        border-radius: 50px;
+                        transition: 0.3s;
+                    }
+                    .likeCount{
+                        color: rgb(250, 70, 70);
+                        transition: 0.3s;
+                    }
+                }
+            }
+
+            .favoriteContainer{
+                display: flex;
+                align-items: center;
+                width: 50%;
+
+                .favoriteIcon{
+                    color: gray;
+                    padding: 3px;
+                }
+
+                .activeFavoriteIcon{
+                    color: rgb(72, 145, 255);
+                    padding: 3px;
+                }
+
+                &:hover{
+                    cursor: pointer;
+                    .favoriteIcon{
+                        color:  rgb(72, 145, 255);
+                        background-color: #5593e434;
+                        border-radius: 50px;
+                        transition: 0.3s;
+                    }
+
+                    .activeFavoriteIcon{
+                        background-color: #5593e434;
+                        border-radius: 50px;
+                        transition: 0.3s;
+                    }
+                }
+            }
+        }
+
+        &:hover{
+            -webkit-box-shadow: 0px 3px 5px 0px rgba(34, 60, 80, 0.1);
+            -moz-box-shadow: 0px 3px 5px 0px rgba(34, 60, 80, 0.1);
+            box-shadow: 0px 3px 5px 0px rgba(34, 60, 80, 0.1);
+            transition: 0.3s;
+        }
+}

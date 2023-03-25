@@ -4,7 +4,6 @@ import { API_URL } from "../../tools/http/http";
 import AuthProvider from "../auth/authProvider";
 import { AuthResponse } from "../auth/authResponse";
 import { IUser } from "./user";
-import UserProvider from "./userProvider";
 
 interface UserState {
     user: IUser | null,
@@ -13,7 +12,6 @@ interface UserState {
     setIsAuth: (isAuth: boolean) => void;
     logout: () => void;
     checkAuth: () => void;
-    save: (user: IUser) => void;
 }
 
 const useUserStore = create<UserState>((set) => ({
@@ -47,15 +45,6 @@ const useUserStore = create<UserState>((set) => ({
             console.log(e.response.data.message)
         }
     },
-
-    save: async (user: IUser) => {
-        try {
-            const response = await UserProvider.save(user)
-            set({ user: response.data })
-        } catch (e: any) {
-            console.log(e.response.data.message)
-        }
-    }
 }))
 
 export default useUserStore;

@@ -1,9 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Avatar, Button } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../content/images/logo.png';
-import { NewPostLink, ProfileLink, TrendsLink } from '../../domain/links/links';
+import { PostEditor, ProfileLink, TrendsLink } from '../../domain/links/links';
 import useUserStore from '../../domain/user/userStore';
 import { AuthModal } from '../user/auth/authModal';
 import styles from './header.module.scss';
@@ -38,7 +38,7 @@ export default function Header() {
                 <div className={styles.createPost}>
                     {
                         user
-                            ? <Link to={NewPostLink}>
+                            ? <Link to={PostEditor.replace(':id', '0')}>
                                 <Button icon={<PlusOutlined />}>
                                     Создать пост
                                 </Button>
@@ -53,7 +53,10 @@ export default function Header() {
                     {
                         user != null
                             ? <Link to={ProfileLink}>
-                                <p>{user.name}</p>
+                                <div className={styles.profile}>
+                                    <p>{user.name}</p>
+                                    <Avatar src={process.env.REACT_APP_API_URL! + user.avatar} />
+                                </div>
                             </Link>
                             : <p onClick={showAuthModal}>Войти</p>
                     }
