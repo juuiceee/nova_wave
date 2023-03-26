@@ -29,8 +29,9 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Content />}>
+          <Route index element={<NewsFeed />} />
           <Route path={TrendsLink} element={<TrendFeed />} />
-          <Route path={NewLink} index element={<NewsFeed />} />
+          <Route path={NewLink} element={<NewsFeed />} />
           <Route path={FavoritesLink} element={<FavoriteFeed />} />
           <Route path={PostLink} element={<PostPage />} />
           <Route path={PostEditor} element={<PostCreator />} />
