@@ -1,10 +1,14 @@
+import { FiStar } from 'react-icons/fi'
 import { TbLeaf } from 'react-icons/tb'
 import { TiWorldOutline } from 'react-icons/ti'
 import { Link, useLocation } from 'react-router-dom'
-import { NewLink, TrendsLink } from '../../../domain/links/links'
+import { FavouritesLink, NewLink, TrendsLink } from '../../../domain/links/links'
+import useUserStore from '../../../domain/user/userStore'
 import styles from './leftContent.module.scss'
 
 export function LeftContent() {
+
+    const [user] = useUserStore(state => [state.user])
 
     const location = useLocation();
 
@@ -28,12 +32,15 @@ export function LeftContent() {
                 </div>
             </Link>
 
-            {/* <Link to={FavouritesLink}>
-                <div className={isActive(FavouritesLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                    <FiStar size={17} />
-                    <p>Избранное</p>
-                </div>
-            </Link> */}
+            {
+                user != null &&
+                <Link to={FavouritesLink}>
+                    <div className={isActive(FavouritesLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
+                        <FiStar size={17} />
+                        <p>Избранное</p>
+                    </div>
+                </Link>
+            }
 
             {/* <Link to={SubscriptionsLink}>
             <div className={isActive(SubscriptionsLink) ? styles.sidebarItemSelected : styles.sidebarItem}>

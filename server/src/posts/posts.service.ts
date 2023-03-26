@@ -105,7 +105,7 @@ export class PostsService {
         if (postIds.length == 0) return { rows: [], count: 0 }
 
         const posts = await this.postRepository.findAndCountAll({
-            where: { id: { [Op.like]: { [Op.any]: postIds } } }, //ПОНЯТЬ КАК РАБОТАЕТ ЕБАННОЕ СРАВНЕНИЕ UUID И TEXT
+            where: { id: { [Op.in]: postIds }, isRemoved: false },
             limit,
             offset: page * limit,
         })
@@ -114,7 +114,7 @@ export class PostsService {
     }
 
     async editPost(dto: CreatePostDto, image?: any) {
-        let fileName = dto.imageSrc;
+        let fileName = dto.imageSrc ?? null;
 
         if (image != null)
             fileName = await this.fileService.createFile(image)

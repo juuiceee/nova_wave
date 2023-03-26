@@ -5,18 +5,16 @@ import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { BsFillTrashFill } from 'react-icons/bs'
 import { IPost } from "../../../domain/post/post"
 import PostProvider from "../../../domain/post/postProvider"
-import { IUser } from "../../../domain/user/user"
 import UserProvider from "../../../domain/user/userProvider"
 import useUserStore from "../../../domain/user/userStore"
 import { PostCard } from '../../postCard/postCard'
 import { AuthModal } from "../auth/authModal"
 import styles from './profile.module.scss'
 
-interface IProps {
-    user: IUser | null
-}
 
-export function Profile(props: IProps) {
+export function Profile() {
+    const user = useUserStore(state => state.user)
+
     const ref = useRef<HTMLInputElement>(null);
 
     const [messageApi, contextHolder] = message.useMessage();
@@ -34,19 +32,19 @@ export function Profile(props: IProps) {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     useEffect(() => {
-        if (props.user) {
-            setName(props.user.name)
-            setDescription(props.user.description)
-            setEmail(props.user.email)
-            setImageSrc(props.user.avatar ? props.user.avatar : "")
+        if (user != null) {
+            setName(user.name)
+            setDescription(user.description)
+            setEmail(user.email)
+            setImageSrc(user.avatar ? user.avatar : "")
         }
-    }, [props.user])
+    }, [user])
 
     async function saveUser() {
-        if (props.user)
+        if (user != null)
             try {
                 const formData = new FormData()
-                formData.append('id', props.user.id)
+                formData.append('id', user.id)
                 formData.append('name', name)
                 formData.append('description', description)
                 formData.append('email', email)
@@ -79,8 +77,8 @@ export function Profile(props: IProps) {
     }
 
     async function getPostPaged() {
-        if (props.user != null) {
-            const postPaged = await PostProvider.getPostsByUserId(props.user.id)
+        if (user != null) {
+            const postPaged = await PostProvider.getPostsByUserId(user.id)
             setPosts(postPaged.data.rows)
         }
     }
@@ -192,7 +190,7 @@ export function Profile(props: IProps) {
         <div className={styles.profileContent}>
             {contextHolder}
             {
-                !props.user
+                user == null
                     ? <>
                         <Button type="link" onClick={showAuthModal} size="large" className={styles.modalButton}>
                             Авторизируйтесь чтобы попасть на свой аккаунт

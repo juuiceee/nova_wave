@@ -1,6 +1,7 @@
 import { EditOutlined, SmallDashOutlined } from '@ant-design/icons';
 import { Button, Card, Image, Popover, Typography } from "antd";
 import Avatar from "antd/es/avatar/avatar";
+import useModal from 'antd/es/modal/useModal';
 import Title from "antd/es/typography/Title";
 import { isYesterday } from 'date-fns';
 import { useState } from "react";
@@ -13,14 +14,15 @@ import PostProvider from "../../domain/post/postProvider";
 import UserProvider from "../../domain/user/userProvider";
 import useUserStore from "../../domain/user/userStore";
 import { dateFormat, hoursToday, shortDateFormat } from '../../tools/date/dateExtensions';
+import { AuthModal } from '../user/auth/authModal';
 import styles from "./postCard.module.scss";
 
 interface IProps {
     post: IPost;
     needLink: boolean;
     previewImage: boolean;
+    hoverable: boolean
     isEditable?: boolean;
-    hoverable?: boolean
     refreshPage?: () => Promise<void>;
 }
 
@@ -29,6 +31,10 @@ export function PostCard(props: IProps) {
 
     const [likes, setLikes] = useState<string[]>(props.post.usersLiked)
     const [likesCount, setLikesCount] = useState<number>(props.post.usersLiked.length)
+
+    const [modal, contextHolder] = useModal();
+    const [openPopover, setOpenPopover] = useState(false);
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     const navigateTo = useNavigate()
 
@@ -43,7 +49,7 @@ export function PostCard(props: IProps) {
             setLikes(post.data.usersLiked)
         }
         else {
-            //придумать что делать если неавторизованный пользователь нажимает лайк
+            setIsAuthModalOpen(true)
         }
     }
 
@@ -52,13 +58,29 @@ export function PostCard(props: IProps) {
             const userResponse = await UserProvider.setFavoritePost(user.id, props.post.id)
             setUser(userResponse.data)
         }
+        else {
+            setIsAuthModalOpen(true)
+        }
     }
 
     async function deletePost() {
-        await PostProvider.deletePost(props.post.id)
+        setOpenPopover(false);
+        modal.confirm({
+            content: (
+                <>
+                    Вы уверены что хотите удалить пост?
+                </>
+            ),
+            okText: 'Да',
+            okType: 'danger',
+            cancelText: 'Нет',
+            async onOk() {
+                await PostProvider.deletePost(props.post.id)
 
-        if (props.refreshPage != null)
-            await props.refreshPage()
+                if (props.refreshPage != null)
+                    await props.refreshPage()
+            }
+        })
     }
 
     function editPost() {
@@ -84,6 +106,7 @@ export function PostCard(props: IProps) {
                 onClick={editPost}>
                 Редактировать
             </Button>
+            {contextHolder}
         </div>
     )
 
@@ -107,7 +130,14 @@ export function PostCard(props: IProps) {
 
                     {
                         props.isEditable &&
-                        <Popover trigger="click" placement="bottom" content={popoverContent} className={styles.popover}>
+                        <Popover
+                            trigger="click"
+                            placement="bottom"
+                            content={popoverContent}
+                            className={styles.popover}
+                            open={openPopover}
+                            onOpenChange={() => setOpenPopover(!openPopover)}
+                        >
                             <SmallDashOutlined />
                         </Popover>
                     }
@@ -155,21 +185,26 @@ export function PostCard(props: IProps) {
                 <div className={styles.bottomContainer}>
                     <div className={styles.likeContainer} onClick={changeLike}>
                         {
-                            user != null && likes.filter(u => u == user.id).length == 0
+                            user == null
                                 ? <AiOutlineHeart size={24} className={styles.likeIcon} />
-                                : <AiFillHeart size={24} className={styles.activeLikeIcon} />
+                                : likes.filter(u => u == user.id).length == 0
+                                    ? <AiOutlineHeart size={24} className={styles.likeIcon} />
+                                    : <AiFillHeart size={24} className={styles.activeLikeIcon} />
                         }
                         <span className={styles.likeCount}>{likesCount}</span>
                     </div>
                     <div className={styles.favoriteContainer} onClick={changeFavorite}>
                         {
-                            user != null && user.favouritePosts.filter(p => p == props.post.id).length == 0
+                            user == null
                                 ? <AiOutlineStar size={24} className={styles.favoriteIcon} />
-                                : <AiFillStar size={24} className={styles.activeFavoriteIcon} />
+                                : user.favouritePosts.filter(p => p == props.post.id).length == 0
+                                    ? <AiOutlineStar size={24} className={styles.favoriteIcon} />
+                                    : <AiFillStar size={24} className={styles.activeFavoriteIcon} />
                         }
                     </div>
                 </div>
             </div>
+            <AuthModal isOpenModal={isAuthModalOpen} handleOk={() => setIsAuthModalOpen(false)} />
         </Card>
     )
 }
