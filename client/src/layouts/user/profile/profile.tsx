@@ -7,6 +7,7 @@ import { IPost } from "../../../domain/post/post"
 import PostProvider from "../../../domain/post/postProvider"
 import UserProvider from "../../../domain/user/userProvider"
 import useUserStore from "../../../domain/user/userStore"
+import { EmptyPosts } from '../../emptyPosts/emptyPosts'
 import { PostCard } from '../../postCard/postCard'
 import { AuthModal } from "../auth/authModal"
 import styles from './profile.module.scss'
@@ -30,6 +31,8 @@ export function Profile() {
     const [imageSrc, setImageSrc] = useState<string>('');
 
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     useEffect(() => {
         if (user != null) {
@@ -78,8 +81,10 @@ export function Profile() {
 
     async function getPostPaged() {
         if (user != null) {
+            setIsLoading(true)
             const postPaged = await PostProvider.getPostsByUserId(user.id)
             setPosts(postPaged.data.rows)
+            setIsLoading(false)
         }
     }
 
@@ -174,15 +179,23 @@ export function Profile() {
             key: 'posts',
             label: 'Мои посты',
             children:
-                <div className={styles.feed}>
+                <>
                     {
-                        posts.map((p, index) => (
-                            <div className={styles.post}>
-                                <PostCard post={p} needLink previewImage={false} key={index} isEditable refreshPage={getPostPaged} hoverable />
-                            </div>
-                        ))
+                        isLoading
+                            ? <></>
+                            : posts.length != 0
+                                ? <div className={styles.feed}>
+                                    {
+                                        posts.map((p, index) => (
+                                            <div className={styles.post}>
+                                                <PostCard post={p} needLink previewImage={false} key={index} isEditable refreshPage={getPostPaged} hoverable elipsis />
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                : <EmptyPosts message="У вас еще нет постов. Но вы можете их создать!" />
                     }
-                </div>
+                </>
         },
     ]
 

@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.module.scss';
-import { FavouritesLink, NewLink, PostEditor, PostLink, ProfileLink, TrendsLink } from './domain/links/links';
+import { FavoritesLink, NewLink, PostEditor, PostLink, ProfileLink, TrendsLink } from './domain/links/links';
 import useUserStore from './domain/user/userStore';
+import { NotFoundPage } from './layouts/errorPages/notFoundPage/notFoundPage';
 import { FavoriteFeed } from './layouts/favoritesFeed/favoriteFeed';
 import Header from './layouts/header/header';
 import { Content } from './layouts/main/content';
 import { NewsFeed } from './layouts/newsFeed/newFeed';
-import { NotFoundPage } from './layouts/errorPages/notFoundPage/notFoundPage';
 import { PostCreator } from './layouts/postCreator/postCreator';
 import { PostPage } from './layouts/postPage/postPage';
 import { TrendFeed } from './layouts/trendsFeed/trendFeed';
@@ -29,10 +29,9 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Content />}>
-          <Route index element={<NewsFeed />} />
           <Route path={TrendsLink} element={<TrendFeed />} />
-          <Route path={NewLink} element={<NewsFeed />} />
-          <Route path={FavouritesLink} element={<FavoriteFeed />} />
+          <Route path={NewLink} index element={<NewsFeed />} />
+          <Route path={FavoritesLink} element={<FavoriteFeed />} />
           <Route path={PostLink} element={<PostPage />} />
           <Route path={PostEditor} element={<PostCreator />} />
           <Route path={ProfileLink} element={<Profile />} />

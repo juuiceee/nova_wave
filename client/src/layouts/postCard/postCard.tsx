@@ -23,6 +23,7 @@ interface IProps {
     previewImage: boolean;
     hoverable: boolean
     isEditable?: boolean;
+    elipsis?: boolean;
     refreshPage?: () => Promise<void>;
 }
 
@@ -158,7 +159,7 @@ export function PostCard(props: IProps) {
                                     <Image preview={false} src={process.env.REACT_APP_API_URL + props.post.image} />
                                 </div>
                             }
-                            <Typography.Paragraph ellipsis={{ rows: 5 }}>
+                            <Typography.Paragraph ellipsis={props.elipsis ? { rows: 5 } : false}>
                                 {props.post.content}
                             </Typography.Paragraph>
                         </Link>
@@ -176,7 +177,7 @@ export function PostCard(props: IProps) {
                                     <Image preview={props.previewImage} src={process.env.REACT_APP_API_URL + props.post.image} />
                                 </div>
                             }
-                            <Typography.Paragraph ellipsis={{ rows: 5 }}>
+                            <Typography.Paragraph ellipsis={props.elipsis ? { rows: 5 } : false}>
                                 {props.post.content}
                             </Typography.Paragraph>
                         </div>

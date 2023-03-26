@@ -1,7 +1,17 @@
-export function EmptyPosts() {
+import styles from './emptyPosts.module.scss'
+
+
+interface IProps {
+    message: string
+}
+
+export function EmptyPosts(props: IProps) {
     return (
-        <div>
-            <p>Здесь еще нет постов. Создайте их первым!</p>
-        </div>
-    )
+        <div className={styles.container}>
+            <div className={styles.content}>
+                <div className={styles.message}>
+                    <p>{props.message}</p>
+                </div>
+            </div>
+        </div>)
 }

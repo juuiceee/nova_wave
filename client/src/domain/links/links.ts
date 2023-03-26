@@ -1,7 +1,7 @@
 export const TrendsLink = '/trends'
 export const PostEditor = '/writePost/:id'
 export const NewLink = '/new'
-export const FavouritesLink = '/favourites'
+export const FavoritesLink = '/favourites'
 export const SubscriptionsLink = '/subscriptions'
 export const ProfileLink = '/profile'
 export const PostLink = '/post/:id'
