@@ -1,0 +1,112 @@
+.content{
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        width: 800px;
+        margin: 10px auto;
+        gap: 20px;
+
+    .settings{
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+
+        .textInputs{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 60%;
+            font-size: 18px;
+
+            p {
+                margin-bottom: 5px;
+            }
+
+            .buttons{
+                button{
+                    margin-top: 10px;
+                    width: 100%;
+                }
+            }
+        }
+
+        .avatar{
+            display: flex;
+            width: 40%;
+            justify-content: center;
+            margin-top: 10px;
+
+            .imageInput{
+                height: 200px;
+                width: 100%;
+                background-color: rgba(1, 249, 253, 0.137);;
+                border-radius: 50px;
+                font-size: 18px;
+
+                label{
+                    width: 100%;
+                    height: 100%;
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+
+                    &:hover{
+                        cursor: pointer;
+                    }
+                }
+
+                &:hover{
+                    cursor: pointer;
+                    background-color: rgba(1, 249, 253, 0.288);
+                }
+            }
+
+            .imageContainer{
+                .picture{
+                    display: flex;
+                    justify-content: center;
+                    border-radius: 50px;
+                    height: 200px;
+                    align-items: center;
+                    padding: 3px;
+                    background: rgba(223, 222, 222, 0.5);
+
+                        img {
+                            border-radius: 50px;
+                            max-height: 215px;
+                        }
+                }
+
+                .deleteButton{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 15px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 468px) {
+    .content{
+        .settings{
+            .textInputs{
+                width: 100%;
+            }
+
+            .avatar{
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .content{
+        .settings{
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+}

@@ -6,6 +6,7 @@
     padding: 10px;
     background-color: white;
     gap: 20px;
+    font-size: 18px;
 
     .inputs{
         display: flex;
@@ -20,6 +21,7 @@
 
     .logButton{
         background-color: var(--second-color);
+        font-size: 18px;
 
         &:hover{
             background-color: var(--second-color);
@@ -29,6 +31,7 @@
 
     .regButton{
         color: var(--main-color);
+        font-size: 18px;
 
         &:hover{
             color: var(--main-color);

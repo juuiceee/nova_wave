@@ -58,75 +58,80 @@ export function AuthModal(props: IProps) {
         }
     }
 
-    function changeEmail(event: React.ChangeEvent<HTMLInputElement>) { setEmail(event.target.value) }
-
-    function changePassword(event: React.ChangeEvent<HTMLInputElement>) { setPassword(event.target.value) }
-
-    function changeName(event: React.ChangeEvent<HTMLInputElement>) { setName(event.target.value) }
+    function closeModal() {
+        setEmail('')
+        setPassword('')
+        setName('')
+        props.handleOk()
+    }
 
     return (
         <>
             {contextHolder}
-            <Modal open={props.isOpenModal} onOk={props.handleOk} onCancel={props.handleOk} width={300} footer={null}>
+            <Modal open={props.isOpenModal} onOk={props.handleOk} onCancel={closeModal} width={350} footer={null} centered>
                 {
                     isRegistry
                         ? <div className={styles.authContent}>
                             <div className={styles.inputs}>
-                                <label>Отображаемое имя</label>
+                                <p>Отображаемое имя</p>
                                 <Input
                                     type="text"
                                     value={name}
-                                    onChange={changeName}
+                                    onChange={(event) => setName(event.target.value)}
                                     placeholder=''
                                     maxLength={16}
                                     showCount
                                 />
                             </div>
                             <div className={styles.inputs}>
-                                <label>Email</label>
+                                <p>Email</p>
                                 <Input
                                     type="text"
                                     value={email}
-                                    onChange={changeEmail}
+                                    size="large"
+                                    onChange={(event) => setEmail(event.target.value)}
 
                                 />
                             </div>
                             <div className={styles.inputs}>
-                                <label>Пароль</label>
+                                <p>Пароль</p>
                                 <Input.Password
                                     type="password"
                                     value={password}
-                                    onChange={changePassword}
+                                    size="large"
                                     maxLength={16}
                                     showCount
+                                    onChange={(event) => setPassword(event.target.value)}
                                 />
                             </div>
                             <div className={styles.buttonRow}>
-                                <Button type="primary" className={styles.logButton} onClick={registryUser}>Регистрирация</Button >
-                                <Button type="link" className={styles.regButton} onClick={() => setIsRegistry(false)}>Назад</Button >
+                                <Button type="primary" className={styles.logButton} size="large" onClick={registryUser}>Регистрирация</Button >
+                                <Button type="link" className={styles.regButton} size="large" onClick={() => setIsRegistry(false)}>Авторизация</Button >
                             </div>
                         </div>
 
                         : <div className={styles.authContent}>
                             <div className={styles.inputs}>
-                                <label>Email</label>
+                                <p>Email</p>
                                 <Input
                                     type="text"
                                     value={email}
-                                    onChange={changeEmail}
+                                    size="large"
+                                    onChange={(event) => setEmail(event.target.value)}
                                 />
                             </div>
                             <div className={styles.inputs}>
-                                <label>Пароль</label>
+                                <p>Пароль</p>
                                 <Input.Password
                                     type="password"
                                     value={password}
-                                    onChange={changePassword}
+                                    size="large"
+                                    onChange={(event) => setPassword(event.target.value)}
                                 />
                             </div>
                             <div className={styles.buttonRow}>
-                                <Button type="primary" className={styles.logButton} onClick={loginUser}>Войти</Button >
-                                <Button type="link" className={styles.regButton} onClick={() => setIsRegistry(true)}>Регистрирация</Button >
+                                <Button type="primary" className={styles.logButton} size="large" onClick={loginUser}>Войти</Button >
+                                <Button type="link" className={styles.regButton} size="large" onClick={() => setIsRegistry(true)}>Регистрирация</Button >
                             </div>
                         </div>
                 }

@@ -8,11 +8,12 @@ import { useState } from "react";
 import { AiFillHeart, AiFillStar, AiOutlineHeart, AiOutlineStar } from "react-icons/ai";
 import { BsFillTrashFill } from 'react-icons/bs';
 import { Link, useNavigate } from "react-router-dom";
-import { PostEditor, PostLink } from '../../domain/links/links';
+import { PostEditor, PostLink, ProfileLink } from '../../domain/links/links';
 import { IPost } from "../../domain/post/post";
 import PostProvider from "../../domain/post/postProvider";
 import UserProvider from "../../domain/user/userProvider";
 import useUserStore from "../../domain/user/userStore";
+import { useWindowSize } from '../../hooks/useWindowSize';
 import { dateFormat, hoursToday, shortDateFormat } from '../../tools/date/dateExtensions';
 import { AuthModal } from '../user/auth/authModal';
 import styles from "./postCard.module.scss";
@@ -38,6 +39,7 @@ export function PostCard(props: IProps) {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
     const navigateTo = useNavigate()
+    const windowSize = useWindowSize()
 
     async function changeLike() {
         if (user) {
@@ -115,19 +117,21 @@ export function PostCard(props: IProps) {
         <Card bodyStyle={{ padding: 18 }} className={props.hoverable ? styles.post : styles.postWithoutShadow} bordered={false}>
             <div className={styles.link}>
                 <div className={styles.meta}>
-                    <div className={styles.author}>
-                        <Avatar src={process.env.REACT_APP_API_URL + props.post.authorAvatar} />
-                        <p className={styles.authorName}>{props.post.authorName}</p>
-                        <p className={styles.date}>
-                            {
-                                dateFormat(new Date(props.post.createdDateTime)) == dateFormat(new Date())
-                                    ? hoursToday(new Date(props.post.createdDateTime))
-                                    : isYesterday(new Date(props.post.createdDateTime))
-                                        ? "Вчера"
-                                        : shortDateFormat(new Date(props.post.createdDateTime))
-                            }
-                        </p>
-                    </div>
+                    <Link to={ProfileLink.replace(':id', props.post.userId)}>
+                        <div className={styles.author}>
+                            <Avatar src={process.env.REACT_APP_API_URL + props.post.authorAvatar} size={40} />
+                            <p className={styles.authorName}>{props.post.authorName}</p>
+                            <p className={styles.date}>
+                                {
+                                    dateFormat(new Date(props.post.createdDateTime)) == dateFormat(new Date())
+                                        ? hoursToday(new Date(props.post.createdDateTime))
+                                        : isYesterday(new Date(props.post.createdDateTime))
+                                            ? "Вчера"
+                                            : shortDateFormat(new Date(props.post.createdDateTime))
+                                }
+                            </p>
+                        </div>
+                    </Link>
 
                     {
                         props.isEditable &&
@@ -149,7 +153,7 @@ export function PostCard(props: IProps) {
                         <Link key={props.post.id} to={PostLink.replace(':id', props.post.id)}>
                             {
                                 props.post.title != "" &&
-                                <Title level={3} >
+                                <Title level={windowSize.width > 768 ? 2 : 3} >
                                     {props.post.title}
                                 </Title>
                             }
@@ -159,7 +163,7 @@ export function PostCard(props: IProps) {
                                     <Image preview={false} src={process.env.REACT_APP_API_URL + props.post.image} />
                                 </div>
                             }
-                            <Typography.Paragraph ellipsis={props.elipsis ? { rows: 5 } : false}>
+                            <Typography.Paragraph ellipsis={props.elipsis ? { rows: 5 } : false} style={{ fontSize: 18 }}>
                                 {props.post.content}
                             </Typography.Paragraph>
                         </Link>
@@ -167,17 +171,17 @@ export function PostCard(props: IProps) {
                         <div className={styles.link}>
                             {
                                 props.post.title != "" &&
-                                <Title level={3} >
+                                <Title level={windowSize.width > 768 ? 2 : 3} >
                                     {props.post.title}
                                 </Title>
                             }
                             {
                                 props.post.image != null &&
                                 <div className={styles.imageContainer}>
-                                    <Image preview={props.previewImage} src={process.env.REACT_APP_API_URL + props.post.image} />
+                                    <Image preview={false} src={process.env.REACT_APP_API_URL + props.post.image} />
                                 </div>
                             }
-                            <Typography.Paragraph ellipsis={props.elipsis ? { rows: 5 } : false}>
+                            <Typography.Paragraph ellipsis={props.elipsis ? { rows: 5 } : false} style={{ fontSize: 18 }}>
                                 {props.post.content}
                             </Typography.Paragraph>
                         </div>
@@ -187,20 +191,20 @@ export function PostCard(props: IProps) {
                     <div className={styles.likeContainer} onClick={changeLike}>
                         {
                             user == null
-                                ? <AiOutlineHeart size={24} className={styles.likeIcon} />
+                                ? <AiOutlineHeart size={34} className={styles.likeIcon} />
                                 : likes.filter(u => u == user.id).length == 0
-                                    ? <AiOutlineHeart size={24} className={styles.likeIcon} />
-                                    : <AiFillHeart size={24} className={styles.activeLikeIcon} />
+                                    ? <AiOutlineHeart size={34} className={styles.likeIcon} />
+                                    : <AiFillHeart size={34} className={styles.activeLikeIcon} />
                         }
                         <span className={styles.likeCount}>{likesCount}</span>
                     </div>
                     <div className={styles.favoriteContainer} onClick={changeFavorite}>
                         {
                             user == null
-                                ? <AiOutlineStar size={24} className={styles.favoriteIcon} />
+                                ? <AiOutlineStar size={34} className={styles.favoriteIcon} />
                                 : user.favouritePosts.filter(p => p == props.post.id).length == 0
-                                    ? <AiOutlineStar size={24} className={styles.favoriteIcon} />
-                                    : <AiFillStar size={24} className={styles.activeFavoriteIcon} />
+                                    ? <AiOutlineStar size={34} className={styles.favoriteIcon} />
+                                    : <AiFillStar size={34} className={styles.activeFavoriteIcon} />
                         }
                     </div>
                 </div>

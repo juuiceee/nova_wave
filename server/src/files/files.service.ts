@@ -11,7 +11,7 @@ export class FilesService {
 
         try {
             const fileName = uuid.v4() + '.jpg';
-            const filePath = path.resolve(__dirname, '..', '..', 'localstorage')
+            const filePath = path.resolve(__dirname, '..', '..', '..', '..', 'localstorage')
             if (!fs.existsSync(filePath)) {
                 fs.mkdirSync(filePath, { recursive: true })
             }

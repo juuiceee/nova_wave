@@ -10,3 +10,11 @@
         padding: 10px 40px;
     }
 }
+
+@media (max-width: 785px) {
+    .postPage{
+        .postContainer{
+            padding: 10px 0;
+        }
+    }
+}

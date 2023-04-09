@@ -1,4 +1,4 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { User } from 'src/users/users.model';
 import * as uuid from 'uuid';
 
@@ -52,7 +52,4 @@ export class Post extends Model<Post, PostCreationAttribute>{
 
     @Column({ type: DataType.DATE })
     updatedDateTime: Date;
-
-    @BelongsTo(() => User)
-    author: User
 }

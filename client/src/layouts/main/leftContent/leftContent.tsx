@@ -20,14 +20,14 @@ export function LeftContent() {
         <div className={styles.sidebar}>
             <Link to={TrendsLink}>
                 <div className={isActive(TrendsLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                    <TiWorldOutline size={17} />
+                    <TiWorldOutline size={24} />
                     <p>Тренды</p>
                 </div>
             </Link>
 
             <Link to={NewLink}>
                 <div className={isActive(NewLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                    <TbLeaf size={17} />
+                    <TbLeaf size={24} />
                     <p>Свежее</p>
                 </div>
             </Link>
@@ -36,7 +36,7 @@ export function LeftContent() {
                 user != null &&
                 <Link to={FavoritesLink}>
                     <div className={isActive(FavoritesLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                        <FiStar size={17} />
+                        <FiStar size={24} />
                         <p>Избранное</p>
                     </div>
                 </Link>
@@ -44,7 +44,7 @@ export function LeftContent() {
 
             {/* <Link to={SubscriptionsLink}>
             <div className={isActive(SubscriptionsLink) ? styles.sidebarItemSelected : styles.sidebarItem}>
-                <IoCheckmark size={17} />
+                <IoCheckmark size={24} />
                 <p>Подписки</p>
             </div>
             </Link> */}

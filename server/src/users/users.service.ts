@@ -13,31 +13,6 @@ export class UsersService {
     constructor(@InjectModel(User) private userRepository: typeof User, private fileService: FilesService,
         @Inject(forwardRef(() => PostsService)) private postService: PostsService) { }
 
-    async getAllUsers() {
-        const users = await this.userRepository.findAll({ include: { all: true } });
-        return users;
-    }
-
-    async getUserByEmail(email: string) {
-        const user = await this.userRepository.findOne({ where: { email } })
-        return user
-    }
-
-    async getUserByName(name: string) {
-        const user = await this.userRepository.findOne({ where: { name } })
-        return user
-    }
-
-    async getUserById(id: uuid) {
-        const user = await this.userRepository.findOne({ where: { id } })
-        return user
-    }
-
-    async getUsersByIds(ids: uuid[]) {
-        const users = await this.userRepository.findAll({ where: { id: { [Op.in]: ids } } })
-        return users
-    }
-
     async createUser(dto: CreateUserDto, hashPassword: string) {
         if (dto.name.length < 4 || dto.name.length > 16)
             throw new HttpException('Некорректное имя', HttpStatus.BAD_REQUEST)
@@ -112,6 +87,26 @@ export class UsersService {
 
         await this.userRepository.update({ favouritePosts: user.favouritePosts }, { where: { id: userId } })
         return user;
+    }
+
+    async getUserByEmail(email: string) {
+        const user = await this.userRepository.findOne({ where: { email } })
+        return user
+    }
+
+    async getUserByName(name: string) {
+        const user = await this.userRepository.findOne({ where: { name } })
+        return user
+    }
+
+    async getUserById(id: uuid) {
+        const user = await this.userRepository.findOne({ where: { id } })
+        return user
+    }
+
+    async getUsersByIds(ids: uuid[]) {
+        const users = await this.userRepository.findAll({ where: { id: { [Op.in]: ids } } })
+        return users
     }
 
     private validateEmail(email) {

@@ -27,7 +27,7 @@ import { UsersModule } from './users/users.module';
       autoLoadModels: true
     }),
     ServeStaticModule.forRoot({
-      rootPath: resolve('./localstorage')
+      rootPath: resolve('../../localstorage')
     }),
     UsersModule,
     AuthModule,

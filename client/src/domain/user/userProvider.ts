@@ -10,4 +10,8 @@ export default class UserProvider {
     static async setFavoritePost(userId: string, postId: string): Promise<AxiosResponse<IUser>> {
         return $api.put<IUser>(`/users/setFavouritePost/${postId}/${userId}`)
     }
+
+    static async getUserById(userId: string): Promise<AxiosResponse<IUser>> {
+        return $api.get<IUser>(`/users/getByUserId/${userId}`)
+    }
 }

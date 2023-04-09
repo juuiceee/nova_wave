@@ -57,15 +57,6 @@ export class AuthService {
         return { tokens, user }
     }
 
-    private async validateAccessToken(token: string) {
-        try {
-            const userData = this.jwtService.verify(token, { secret: process.env.JWT_ACCESS_SECRET })
-            return userData;
-        } catch (error) {
-            return null
-        }
-    }
-
     private async validateRefreshToken(token: string) {
         try {
             const userData = this.jwtService.verify(token, { secret: process.env.JWT_REFRESH_SECRET })
@@ -105,11 +96,11 @@ export class AuthService {
     private async validateUser(userDto: CreateUserDto) {
         const user = await this.userService.getUserByEmail(userDto.email)
         if (!user)
-            throw new HttpException('Не верный email', HttpStatus.BAD_REQUEST)
+            throw new HttpException('Неверный email', HttpStatus.BAD_REQUEST)
 
         const passwordEquals = await bcrypt.compare(userDto.password, user.password);
         if (!passwordEquals)
-            throw new HttpException('Не верный пароль', HttpStatus.BAD_REQUEST)
+            throw new HttpException('Неверный пароль', HttpStatus.BAD_REQUEST)
 
         return user
     }

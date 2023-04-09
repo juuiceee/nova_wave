@@ -4,7 +4,7 @@
     position: sticky;
     top: 0;
     left: 0;
-    padding: 10px;
+    padding: 15px 20px;
     z-index: 100;
     background: var(--main-color);
     background: linear-gradient(0deg, var(--main-color) 0%, var(--second-color) 100%);
@@ -24,7 +24,15 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100px;
+            align-items: center;
+            gap: 15px;
+
+            .menu{
+                margin-top: 3px;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
 
             img{
                 cursor: pointer;
@@ -34,7 +42,6 @@
         .createPost{
             order: 2;
             display: flex;
-            margin-left: 300px;
         }
 
         .headerRight{
@@ -43,17 +50,28 @@
             align-items: center;
             margin: 0;
             padding: 0;
-
-            .profile{
-                display: flex;
-                flex-direction: row;
-                gap: 10px;
-                align-items: center;
-            }
+            min-width: 70px;
             
             &:hover{
                 cursor: pointer;
             }
         }
     }
+}
+
+.profile{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.tint{
+    opacity: 1;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100%;
+    background: rgba(0,0,0,.6);
 }

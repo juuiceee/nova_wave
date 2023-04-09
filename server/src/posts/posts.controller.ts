@@ -34,6 +34,7 @@ export class PostsController {
 
     @Get('getPostsByUserId/:userId')
     getByUserId(@Param('userId') userId: uuid, @Query('limit') limit: number = 10, @Query('page') page: number = 0) {
+        limit = limit > 20 ? 20 : limit
         return this.postService.getPostsByUserId(userId, limit, page)
     }
 

@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProfileLink, TrendsLink } from "../../domain/links/links";
 import PostProvider from "../../domain/post/postProvider";
 import useUserStore from '../../domain/user/userStore';
+import { useWindowSize } from '../../hooks/useWindowSize';
 import { NotAuthorizedPage } from '../errorPages/notAuthorizedPage/notAuthorizedPage';
 import styles from './postCreator.module.scss';
 
@@ -27,6 +28,7 @@ export function PostCreator() {
 
     const [messageApi, contextHolder] = message.useMessage();
     const navigateTo = useNavigate()
+    const windowSize = useWindowSize()
 
     useEffect(() => {
         if (user != null && id != '0' && id != null) {
@@ -51,7 +53,7 @@ export function PostCreator() {
         textAreaContent.current!.resizableTextArea.textArea.style.height = `auto`
         let scHeight = event.currentTarget.scrollHeight
         textAreaContent.current!.resizableTextArea.textArea.style.height = `${scHeight}px`
-        window.scrollTo(0, scHeight);
+        // window.scrollTo(0, scHeight);
     }
 
     function uploadPicture(e: ChangeEvent<HTMLInputElement>) {
@@ -103,7 +105,7 @@ export function PostCreator() {
                         formData.append('imageSrc', imageSrc)
 
                     await PostProvider.edit(formData)
-                    return navigateTo(ProfileLink)
+                    return navigateTo(ProfileLink.replace(':id', user.id))
                 }
 
                 await PostProvider.create(formData);
@@ -153,7 +155,10 @@ export function PostCreator() {
                                     <div className={styles.picture}>
                                         <Image src={image != null ? imageSrc : process.env.REACT_APP_API_URL + imageSrc} />
                                     </div>
-                                    <Button className={styles.deleteButton} icon={<BsFillTrashFill />} danger type='default' onClick={deleteImage}>Удалить</Button>
+                                    <Button className={styles.deleteButton} icon={<BsFillTrashFill />} danger type='default' size='large'
+                                        onClick={deleteImage}>
+                                        {windowSize.width > 465 ? 'Удалить' : ''}
+                                    </Button>
                                 </div>
                             }
 
@@ -170,7 +175,7 @@ export function PostCreator() {
                         </div>
 
                         <div className={styles.footer}>
-                            <Button type="primary" onClick={createPost}>
+                            <Button type="primary" size='large' onClick={createPost}>
                                 {id != '0' ? "Сохранить" : "Опубликовать"}
                             </Button>
                         </div>

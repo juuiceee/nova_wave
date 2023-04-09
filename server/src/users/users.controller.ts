@@ -8,11 +8,6 @@ import { UsersService } from './users.service';
 export class UsersController {
     constructor(private userService: UsersService) { }
 
-    @Get('/getAll')
-    getUsers() {
-        return this.userService.getAllUsers()
-    }
-
     @Post('/save')
     @UseInterceptors(FileInterceptor('avatar'))
     save(@Body() dto: CreateUserDto, @UploadedFile() image) {
@@ -20,7 +15,12 @@ export class UsersController {
     }
 
     @Put('/setFavouritePost/:postId/:userId')
-    like(@Param('postId') postId: uuid, @Param('userId') userId: uuid) {
+    setFavouritePost(@Param('postId') postId: uuid, @Param('userId') userId: uuid) {
         return this.userService.setFavouritePost(postId, userId)
+    }
+
+    @Get('/getByUserId/:userId')
+    getByUserId(@Param('userId') userId: uuid) {
+        return this.userService.getUserById(userId)
     }
 }
