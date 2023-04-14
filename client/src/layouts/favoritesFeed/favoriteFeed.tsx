@@ -25,7 +25,7 @@ export function FavoriteFeed() {
                 setIsLoading(false)
             })()
         }
-    }, [])
+    }, [user])
 
 
     useEffect(() => {

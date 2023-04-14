@@ -19,7 +19,7 @@
             background-color: rgb(255, 255, 255);
             border: 1px solid rgb(240, 240, 240);
             border-radius: 10px;
-            max-width: 800px;
+            width: 800px;
         
             .imageAndSettings{
                 display: flex;
@@ -56,6 +56,20 @@
         flex-direction: column;
         margin: 0 auto;
         padding: 20px;
+    }
+
+    .emptyPosts{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+        font-size: 20px;
+
+        .createPost{
+            width: 50%;
+        }
     }
     
 @media (max-width: 800px) {

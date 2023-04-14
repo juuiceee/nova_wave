@@ -8,6 +8,7 @@ import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { User } from './users/users.model';
 import { UsersModule } from './users/users.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   controllers: [],
@@ -33,6 +34,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     PostsModule,
     FilesModule,
+    CommentsModule,
   ],
 })
 

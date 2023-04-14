@@ -92,7 +92,6 @@
                 display: flex;
                 gap: 5px;
                 align-items: center;
-                width: 50%;
                 user-select: none;
 
                 .likeIcon{
@@ -131,10 +130,40 @@
                 }
             }
 
+            .commentContainer{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                .commentIcon{
+                    color: gray;
+                    padding: 3px;
+                }
+
+                .commentCount{
+                    margin-bottom: 1px;
+                    color: gray;
+                    font-size: 18px;
+                }
+
+                &:hover{
+                    cursor: pointer;
+                    .commentIcon{
+                        color:  rgb(72, 145, 255);
+                        background-color: #5593e434;
+                        border-radius: 50px;
+                        transition: 0.3s;
+                    }
+
+                    .commentCount{
+                        color: rgb(72, 145, 255);
+                    }
+                }
+            }
+
             .favoriteContainer{
                 display: flex;
                 align-items: center;
-                width: 50%;
 
                 .favoriteIcon{
                     color: gray;

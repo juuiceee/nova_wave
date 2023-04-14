@@ -1,20 +1,61 @@
+
 .postPage{
     display: flex;
     margin: 0 auto;
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(240, 240, 240);
-    border-radius: 0px 0px 10px 10px;
-    height: 100%;
+    flex-direction: column;
 
     .postContainer{
-        padding: 10px 40px;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(240, 240, 240);
+        border-radius: 0px 0px 10px 10px;
+
+        .post{
+            padding: 10px 40px;
+        }
+    }
+
+    .commentsContainer{
+        margin-top: 30px;
+        padding: 30px 120px;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgb(240, 240, 240);
+        border-radius: 10px;
+
+        .createComment{
+            display: flex;
+            flex-direction: column;
+
+            .commentTextArea{
+                font-size: 18px;
+            }
+
+            .createCommentButton{
+                display: flex;
+                justify-content: end;
+                margin-top: 10px;
+            }
+        }
+
+        .comments{
+            margin-top: 20px;
+        }
     }
 }
 
 @media (max-width: 785px) {
     .postPage{
+        margin: 0px;
+        width: 100%;
+        
         .postContainer{
             padding: 10px 0;
+
+            .post{
+                padding: 0px;
+            }
+        }
+        .commentsContainer{
+            padding: 20px 30px;
         }
     }
 }

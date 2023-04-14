@@ -4,10 +4,11 @@ import Avatar from "antd/es/avatar/avatar";
 import useModal from 'antd/es/modal/useModal';
 import Title from "antd/es/typography/Title";
 import { isYesterday } from 'date-fns';
-import { useState } from "react";
-import { AiFillHeart, AiFillStar, AiOutlineHeart, AiOutlineStar } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { AiFillHeart, AiFillStar, AiOutlineComment, AiOutlineHeart, AiOutlineStar } from "react-icons/ai";
 import { BsFillTrashFill } from 'react-icons/bs';
 import { Link, useNavigate } from "react-router-dom";
+import CommentProvider from '../../domain/comment/commentProvider';
 import { PostEditor, PostLink, ProfileLink } from '../../domain/links/links';
 import { IPost } from "../../domain/post/post";
 import PostProvider from "../../domain/post/postProvider";
@@ -33,6 +34,7 @@ export function PostCard(props: IProps) {
 
     const [likes, setLikes] = useState<string[]>(props.post.usersLiked)
     const [likesCount, setLikesCount] = useState<number>(props.post.usersLiked.length)
+    const [commentCount, setCommentCount] = useState<number>(0)
 
     const [modal, contextHolder] = useModal();
     const [openPopover, setOpenPopover] = useState(false);
@@ -40,6 +42,13 @@ export function PostCard(props: IProps) {
 
     const navigateTo = useNavigate()
     const windowSize = useWindowSize()
+
+    useEffect(() => {
+        (async () => {
+            const count = await CommentProvider.getCommentCountByPostId(props.post.id)
+            setCommentCount(count.data)
+        })()
+    }, [])
 
     async function changeLike() {
         if (user) {
@@ -198,6 +207,10 @@ export function PostCard(props: IProps) {
                         }
                         <span className={styles.likeCount}>{likesCount}</span>
                     </div>
+                    <Link to={PostLink.replace(':id', props.post.id)} className={styles.commentContainer}>
+                        <AiOutlineComment size={34} className={styles.commentIcon} />
+                        <span className={styles.commentCount}>{commentCount}</span>
+                    </Link>
                     <div className={styles.favoriteContainer} onClick={changeFavorite}>
                         {
                             user == null

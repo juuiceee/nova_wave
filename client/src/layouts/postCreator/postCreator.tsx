@@ -43,19 +43,6 @@ export function PostCreator() {
         }
     }, [])
 
-    function keyUpTitle(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-        textAreaTitle.current!.resizableTextArea.textArea.style.height = `auto`
-        let scHeight = event.currentTarget.scrollHeight
-        textAreaTitle.current!.resizableTextArea.textArea.style.height = `${scHeight}px`
-    }
-
-    function keyUpContent(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-        textAreaContent.current!.resizableTextArea.textArea.style.height = `auto`
-        let scHeight = event.currentTarget.scrollHeight
-        textAreaContent.current!.resizableTextArea.textArea.style.height = `${scHeight}px`
-        // window.scrollTo(0, scHeight);
-    }
-
     function uploadPicture(e: ChangeEvent<HTMLInputElement>) {
         if (!e.target.files?.length) return;
 
@@ -115,7 +102,7 @@ export function PostCreator() {
                 messageApi.open({
                     type: 'error',
                     content: e.response.data.message,
-                    duration: 3
+                    duration: 3,
                 })
             }
     }
@@ -128,6 +115,7 @@ export function PostCreator() {
                         {contextHolder}
                         <div className={styles.editor}>
                             <TextArea
+                                autoSize
                                 id="title"
                                 className={styles.title}
                                 ref={textAreaTitle}
@@ -136,7 +124,6 @@ export function PostCreator() {
                                 bordered={false}
                                 size='large'
                                 maxLength={100}
-                                onKeyUp={keyUpTitle}
                                 onChange={e => setTitle(e.target.value)}
                             />
 
@@ -163,13 +150,13 @@ export function PostCreator() {
                             }
 
                             <TextArea
+                                autoSize
                                 id="text"
                                 className={styles.text}
                                 ref={textAreaContent}
                                 placeholder="Ваш текст"
                                 value={content}
                                 bordered={false}
-                                onKeyUp={keyUpContent}
                                 onChange={e => setContent(e.target.value)}
                             />
                         </div>

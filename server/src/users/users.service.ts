@@ -1,6 +1,7 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
+import { CommentsService } from 'src/comments/comments.service';
 import { FilesService } from 'src/files/files.service';
 import { PostsService } from 'src/posts/posts.service';
 import * as uuid from 'uuid';
@@ -11,7 +12,8 @@ import { User } from './users.model';
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(User) private userRepository: typeof User, private fileService: FilesService,
-        @Inject(forwardRef(() => PostsService)) private postService: PostsService) { }
+        @Inject(forwardRef(() => PostsService)) private postService: PostsService,
+        @Inject(forwardRef(() => CommentsService)) private commentService: CommentsService) { }
 
     async createUser(dto: CreateUserDto, hashPassword: string) {
         if (dto.name.length < 4 || dto.name.length > 16)
@@ -52,6 +54,7 @@ export class UsersService {
             fileName = await this.fileService.createFile(image)
 
         await this.postService.updateAllPostsByUser(userDto.id, userDto.name, fileName)
+        await this.commentService.updateAllCommentsByUser(userDto.id, userDto.name, fileName)
 
         await this.userRepository.update({
             email: userDto.email,

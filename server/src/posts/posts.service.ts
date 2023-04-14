@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { col, fn, Op } from 'sequelize';
+import { Op, col, fn } from 'sequelize';
 import { FilesService } from 'src/files/files.service';
 import { UsersService } from 'src/users/users.service';
 import * as uuid from 'uuid';
@@ -9,7 +9,8 @@ import { Post } from './posts.model';
 
 @Injectable()
 export class PostsService {
-    constructor(@InjectModel(Post) private postRepository: typeof Post, private fileService: FilesService, private userService: UsersService) { }
+    constructor(@InjectModel(Post) private postRepository: typeof Post, private fileService: FilesService,
+        @Inject(forwardRef(() => UsersService)) private userService: UsersService) { }
 
     async create(dto: CreatePostDto, image?: any) {
         const fileName = await this.fileService.createFile(image)

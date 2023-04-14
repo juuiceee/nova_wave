@@ -1,0 +1,80 @@
+.card{
+    margin-bottom: 30px;
+    
+    .commentCard{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .header{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+
+            .author{
+                margin-left: 15px;
+
+                .authorName{
+                    font-size: 16px;
+                    font-weight: 600;
+                }
+
+                .date{
+                    font-size: 12px;
+                    margin-top: 5px;
+                    color: rgb(175, 175, 175);
+                }
+            }
+        }
+
+        .content{
+            font-size: 18px;
+        }
+
+        .footer{
+
+            .likeContainer{
+                    display: flex;
+                    gap: 5px;
+                    align-items: center;
+                    user-select: none;
+                    width: fit-content;
+
+                    .likeIcon{
+                        color: gray;
+                        padding: 3px;
+                    }
+
+                    .activeLikeIcon{
+                        color: rgb(250, 70, 70);
+                        padding: 3px;
+                    }
+
+                    .likeCount{
+                        margin-bottom: 1px;
+                        color: gray;
+                        font-size: 16px;
+                    }
+
+                    &:hover{
+                        cursor: pointer;
+                        .likeIcon{
+                            color: rgb(250, 70, 70);
+                            background-color: rgba(199, 199, 199, 0.288);
+                            border-radius: 50px;
+                            transition: 0.3s;
+                        }
+                        .activeLikeIcon{
+                            background-color: rgba(199, 199, 199, 0.288);
+                            border-radius: 50px;
+                            transition: 0.3s;
+                        }
+                        .likeCount{
+                            color: rgb(250, 70, 70);
+                            transition: 0.3s;
+                        }
+                    }
+            }
+        }
+    }
+}
