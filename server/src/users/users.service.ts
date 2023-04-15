@@ -1,5 +1,6 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import * as bcrypt from 'bcryptjs';
 import { Op } from 'sequelize';
 import { CommentsService } from 'src/comments/comments.service';
 import { FilesService } from 'src/files/files.service';
@@ -8,7 +9,6 @@ import * as uuid from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.model';
 
-
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(User) private userRepository: typeof User, private fileService: FilesService,
@@ -16,14 +16,7 @@ export class UsersService {
         @Inject(forwardRef(() => CommentsService)) private commentService: CommentsService) { }
 
     async createUser(dto: CreateUserDto, hashPassword: string) {
-        if (dto.name.length < 4 || dto.name.length > 16)
-            throw new HttpException('Некорректное имя', HttpStatus.BAD_REQUEST)
-
-        if (dto.email.length < 1 || !this.validateEmail(dto.email))
-            throw new HttpException('Некорректный email', HttpStatus.BAD_REQUEST)
-
-        if (dto.password.length < 4 || dto.password.length > 16)
-            throw new HttpException('Некорректный пароль', HttpStatus.BAD_REQUEST)
+        this.validateUser(dto)
 
         const user = await this.userRepository.create({
             ...dto,
@@ -46,6 +39,10 @@ export class UsersService {
         if (sameName && sameName.id != userDto.id)
             throw new HttpException('Пользователь с таким именем уже существует', HttpStatus.BAD_REQUEST)
 
+        this.validateUser(userDto)
+
+        const hashPassword = await bcrypt.hash(userDto.password, 5);
+
         let fileName = userDto.avatarSrc
 
         if (userDto.avatarSrc == "")
@@ -57,9 +54,8 @@ export class UsersService {
         await this.commentService.updateAllCommentsByUser(userDto.id, userDto.name, fileName)
 
         await this.userRepository.update({
-            email: userDto.email,
-            name: userDto.name,
-            description: userDto.description,
+            ...userDto,
+            password: hashPassword,
             avatar: fileName,
             updatedDateTime: new Date()
         }, { where: { id: userDto.id } })
@@ -110,6 +106,18 @@ export class UsersService {
     async getUsersByIds(ids: uuid[]) {
         const users = await this.userRepository.findAll({ where: { id: { [Op.in]: ids } } })
         return users
+    }
+
+    private validateUser(userDto: CreateUserDto) {
+        if (userDto.name.length < 4 || userDto.name.length > 16)
+            throw new HttpException('Некорректное имя', HttpStatus.BAD_REQUEST)
+
+        if (userDto.email.length < 1 || !this.validateEmail(userDto.email))
+            throw new HttpException('Некорректный email', HttpStatus.BAD_REQUEST)
+
+        if (userDto.password != null)
+            if (userDto.password.length < 4 || userDto.password.length > 16)
+                throw new HttpException('Некорректный пароль', HttpStatus.BAD_REQUEST)
     }
 
     private validateEmail(email) {

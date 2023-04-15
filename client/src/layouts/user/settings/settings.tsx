@@ -17,7 +17,7 @@ export function Settings() {
 
     const [messageApi, contextHolder] = message.useMessage();
 
-    const [user, setUser, logout, checkAuth] = useUserStore(state => [state.user, state.setUser, state.logout, state.checkAuth])
+    const [user, setUser, checkAuth] = useUserStore(state => [state.user, state.setUser, state.checkAuth])
 
     const [name, setName] = useState<string>('')
     const [description, setDescription] = useState<string>('')
@@ -25,6 +25,9 @@ export function Settings() {
 
     const [avatar, setAvatar] = useState<File | null>(null)
     const [imageSrc, setImageSrc] = useState<string>('');
+
+    const [isShowPasswordBox, setIsShowPasswordBox] = useState<boolean>(false)
+    const [newPassword, setNewPassword] = useState<string | null>(null)
 
     const navigateTo = useNavigate()
 
@@ -48,12 +51,17 @@ export function Settings() {
                 formData.append('avatarSrc', imageSrc)
                 if (avatar != null)
                     formData.append('avatar', avatar)
+                if (newPassword != null)
+                    formData.append('password', newPassword)
 
                 const response = await UserProvider.save(formData)
 
                 setUser(response.data)
                 checkAuth()
                 setAvatar(null)
+                setUser(user)
+                navigateTo(ProfileLink.replace(':id', user.id))
+
                 messageApi.open({
                     type: 'success',
                     content: 'Успешно сохранено',
@@ -90,12 +98,6 @@ export function Settings() {
         setImageSrc("");
         if (!ref.current) return;
         ref.current.value = "";
-    }
-
-    async function saveChanges() {
-        await saveUser()
-        setUser(user!)
-        navigateTo(ProfileLink.replace(':id', user!.id))
     }
 
     return (
@@ -143,8 +145,18 @@ export function Settings() {
                                 <Input type="text" value={email} size='large' onChange={(event) => setEmail(event.target.value)}></Input>
                             </div>
 
+                            <div>
+                                <Button type='link' style={{ padding: 0 }} onClick={() => setIsShowPasswordBox(!isShowPasswordBox)}>Изменить пароль</Button>
+                                {
+                                    isShowPasswordBox &&
+                                    <div>
+                                        <Input type="text" value={newPassword || ''} size='large' onChange={(event) => setNewPassword(event.target.value)}></Input>
+                                    </div>
+                                }
+                            </div>
+
                             <div className={styles.buttons}>
-                                <Button type="primary" size='large' onClick={saveChanges}>Сохранить</Button>
+                                <Button type="primary" size='large' onClick={saveUser}>Сохранить</Button>
                             </div>
                         </div>
                     </div>
