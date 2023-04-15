@@ -41,8 +41,6 @@ export class UsersService {
 
         this.validateUser(userDto)
 
-        const hashPassword = await bcrypt.hash(userDto.password, 5);
-
         let fileName = userDto.avatarSrc
 
         if (userDto.avatarSrc == "")
@@ -53,12 +51,22 @@ export class UsersService {
         await this.postService.updateAllPostsByUser(userDto.id, userDto.name, fileName)
         await this.commentService.updateAllCommentsByUser(userDto.id, userDto.name, fileName)
 
-        await this.userRepository.update({
-            ...userDto,
-            password: hashPassword,
-            avatar: fileName,
-            updatedDateTime: new Date()
-        }, { where: { id: userDto.id } })
+        if (userDto.password != null) {
+            const hashPassword = await bcrypt.hash(userDto.password, 5);
+            await this.userRepository.update({
+                ...userDto,
+                password: hashPassword,
+                avatar: fileName,
+                updatedDateTime: new Date()
+            }, { where: { id: userDto.id } })
+        }
+        else {
+            await this.userRepository.update({
+                ...userDto,
+                avatar: fileName,
+                updatedDateTime: new Date()
+            }, { where: { id: userDto.id } })
+        }
     }
 
     async setFavouritePost(postId: uuid, userId: uuid) {

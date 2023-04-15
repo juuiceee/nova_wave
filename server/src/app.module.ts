@@ -4,11 +4,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { CommentsModule } from './comments/comments.module';
 import { FilesModule } from './files/files.module';
 import { PostsModule } from './posts/posts.module';
 import { User } from './users/users.model';
 import { UsersModule } from './users/users.module';
-import { CommentsModule } from './comments/comments.module';
 
 @Module({
   controllers: [],
@@ -28,7 +28,7 @@ import { CommentsModule } from './comments/comments.module';
       autoLoadModels: true
     }),
     ServeStaticModule.forRoot({
-      rootPath: resolve('../../localstorage')
+      rootPath: resolve('../localstorage')
     }),
     UsersModule,
     AuthModule,
